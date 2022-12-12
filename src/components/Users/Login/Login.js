@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import poster from "../../../img/poster.png";
+import { loginUserAction } from "../../../redux/slices/users/usersSlices";
 
 //Form Schema
 const formSchema = Yup.object({
@@ -21,6 +22,7 @@ const Login = () => {
       password: "",
     },
     onSubmit: (values) => {
+      dispatch(loginUserAction(values));
       console.log(values);
     },
     validationSchema: formSchema,
