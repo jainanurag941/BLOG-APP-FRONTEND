@@ -29,7 +29,6 @@ const Register = () => {
     },
     onSubmit: (values) => {
       dispatch(registerUserAction(values));
-      console.log(values);
     },
     validationSchema: formSchema,
   });

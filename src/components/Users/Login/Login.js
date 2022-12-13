@@ -24,7 +24,6 @@ const Login = () => {
     },
     onSubmit: (values) => {
       dispatch(loginUserAction(values));
-      console.log(values);
     },
     validationSchema: formSchema,
   });
