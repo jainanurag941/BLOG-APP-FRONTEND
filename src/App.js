@@ -1,6 +1,7 @@
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import AddNewCategory from "./components/Categories/AddNewCategory";
 import CategoryList from "./components/Categories/CategoryList";
+import UpdateCategory from "./components/Categories/UpdateCategory";
 import HomePage from "./components/HomePage/HomePage";
 import Navbar from "./components/Navigation/Navbar";
 import Login from "./components/Users/Login/Login";
@@ -12,6 +13,7 @@ function App() {
       <Navbar />
       <Switch>
         <Route exact path="/add-category" component={AddNewCategory} />
+        <Route exact path="/update-category/:id" component={UpdateCategory} />
         <Route exact path="/category-list" component={CategoryList} />
         <Route exact path="/" component={HomePage} />
         <Route exact path="/register" component={Register} />
