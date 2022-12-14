@@ -1,5 +1,10 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, createAction } from "@reduxjs/toolkit";
 import axios from "axios";
+
+//action to redirect
+const resetEditAction = createAction("category/reset");
+const resetDeleteAction = createAction("category/delete-reset");
+const resetCategoryAction = createAction("category/created-reset");
 
 //action
 export const createCategoryAction = createAsyncThunk(
@@ -23,6 +28,8 @@ export const createCategoryAction = createAsyncThunk(
         },
         config
       );
+
+      dispatch(resetCategoryAction());
 
       return data;
     } catch (error) {
@@ -84,6 +91,9 @@ export const updateCategoriesAction = createAsyncThunk(
         config
       );
 
+      //dispatch action to reset updated data
+      dispatch(resetEditAction());
+
       return data;
     } catch (error) {
       if (!error?.response) {
@@ -113,6 +123,8 @@ export const deleteCategoriesAction = createAsyncThunk(
         `${process.env.REACT_APP_API_URL}/api/category/${id}`,
         config
       );
+
+      dispatch(resetDeleteAction());
 
       return data;
     } catch (error) {
@@ -163,8 +175,12 @@ const categorySlices = createSlice({
     builder.addCase(createCategoryAction.pending, (state, action) => {
       state.loading = true;
     });
+    builder.addCase(resetCategoryAction, (state, action) => {
+      state.isCreated = true;
+    })
     builder.addCase(createCategoryAction.fulfilled, (state, action) => {
       state.loading = false;
+      state.isCreated = false;
       state.category = action?.payload;
       state.appErr = undefined;
       state.serverErr = undefined;
@@ -195,9 +211,13 @@ const categorySlices = createSlice({
     builder.addCase(updateCategoriesAction.pending, (state, action) => {
       state.loading = true;
     });
+    builder.addCase(resetEditAction, (state, action) => {
+      state.isEdited = true;
+    });
     builder.addCase(updateCategoriesAction.fulfilled, (state, action) => {
       state.loading = false;
       state.updateCategory = action?.payload;
+      state.isEdited = false;
       state.appErr = undefined;
       state.serverErr = undefined;
     });
@@ -211,8 +231,12 @@ const categorySlices = createSlice({
     builder.addCase(deleteCategoriesAction.pending, (state, action) => {
       state.loading = true;
     });
+    builder.addCase(resetDeleteAction, (state, action) => {
+      state.isDeleted = true;
+    });
     builder.addCase(deleteCategoriesAction.fulfilled, (state, action) => {
       state.loading = false;
+      state.isDeleted = false;
       state.deletedCategory = action?.payload;
       state.appErr = undefined;
       state.serverErr = undefined;
