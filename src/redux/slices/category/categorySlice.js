@@ -2,14 +2,19 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 //action
-const createCategoryAction = createAsyncThunk(
+export const createCategoryAction = createAsyncThunk(
   "category/create",
   async (category, { rejectWithValue, getState, dispatch }) => {
+    //get user token
+    const user = getState()?.users;
+    const { userAuth } = user;
+
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        Authorization: `Bearer ${userAuth?.token}`,
       },
     };
+
     try {
       const { data } = await axios.post(
         `${process.env.REACT_APP_API_URL}/api/category`,
@@ -18,6 +23,8 @@ const createCategoryAction = createAsyncThunk(
         },
         config
       );
+
+      return data;
     } catch (error) {
       if (!error?.response) {
         throw error;
@@ -30,7 +37,7 @@ const createCategoryAction = createAsyncThunk(
 // slices
 const categorySlices = createSlice({
   name: "category",
-  initialState: { category: "NODE JS" },
+  initialState: {},
   extraReducers: (builder) => {
     builder.addCase(createCategoryAction.pending, (state, action) => {
       state.loading = true;
