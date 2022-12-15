@@ -4,6 +4,8 @@ import CategoryList from "./components/Categories/CategoryList";
 import UpdateCategory from "./components/Categories/UpdateCategory";
 import HomePage from "./components/HomePage/HomePage";
 import Navbar from "./components/Navigation/Navbar";
+import AdminRoute from "./components/Navigation/ProtectedRoutes/AdminRoute";
+import PrivateProtectRoute from "./components/Navigation/ProtectedRoutes/PrivateProtectRoute";
 import Login from "./components/Users/Login/Login";
 import Register from "./components/Users/Register/Register";
 
@@ -12,9 +14,13 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <Switch>
-        <Route exact path="/add-category" component={AddNewCategory} />
-        <Route exact path="/update-category/:id" component={UpdateCategory} />
-        <Route exact path="/category-list" component={CategoryList} />
+        <AdminRoute exact path="/add-category" component={AddNewCategory} />
+        <AdminRoute
+          exact
+          path="/update-category/:id"
+          component={UpdateCategory}
+        />
+        <AdminRoute exact path="/category-list" component={CategoryList} />
         <Route exact path="/" component={HomePage} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
