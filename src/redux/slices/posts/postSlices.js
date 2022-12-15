@@ -1,5 +1,7 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, createAction } from "@reduxjs/toolkit";
 import axios from "axios";
+
+const resetPostAction = createAction("post/reset");
 
 //create post action
 export const createPostAction = createAsyncThunk(
@@ -28,6 +30,8 @@ export const createPostAction = createAsyncThunk(
         config
       );
 
+      dispatch(resetPostAction());
+
       return data;
     } catch (error) {
       if (!error?.response) {
@@ -46,9 +50,13 @@ const postSlice = createSlice({
     builder.addCase(createPostAction.pending, (state, action) => {
       state.loading = true;
     });
+    builder.addCase(resetPostAction, (state, action) => {
+      state.isCreated = true;
+    });
     builder.addCase(createPostAction.fulfilled, (state, action) => {
       state.loading = false;
       state.postCreated = action?.payload;
+      state.isCreated = false;
       state.appErr = undefined;
       state.serverErr = undefined;
     });
