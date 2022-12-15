@@ -16,9 +16,15 @@ export const createPostAction = createAsyncThunk(
     };
 
     try {
+      const formData = new FormData();
+      formData.append("title", post?.title);
+      formData.append("description", post?.description);
+      formData.append("category", post?.category);
+      formData.append("image", post?.image);
+
       const { data } = await axios.post(
         `${process.env.REACT_APP_API_URL}/api/posts`,
-        post,
+        formData,
         config
       );
 
