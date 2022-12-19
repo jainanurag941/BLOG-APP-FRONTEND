@@ -177,7 +177,7 @@ const categorySlices = createSlice({
     });
     builder.addCase(resetCategoryAction, (state, action) => {
       state.isCreated = true;
-    })
+    });
     builder.addCase(createCategoryAction.fulfilled, (state, action) => {
       state.loading = false;
       state.isCreated = false;

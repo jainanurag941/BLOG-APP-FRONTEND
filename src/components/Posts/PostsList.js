@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { ThumbUpIcon, ThumbDownIcon, EyeIcon } from "@heroicons/react/solid";
 import { fetchPostsAction } from "../../redux/slices/posts/postSlices";
 import DateFormatter from "../../utils/DateFormatter";
+import { fetchCategoriesAction } from "../../redux/slices/category/categorySlice";
+import LoadingPart from "../../utils/LoadingPart";
 
 export default function PostsList() {
   const dispatch = useDispatch();
@@ -12,8 +14,20 @@ export default function PostsList() {
     dispatch(fetchPostsAction());
   }, [dispatch]);
 
+  useEffect(() => {
+    dispatch(fetchCategoriesAction());
+  }, [dispatch]);
+
   const post = useSelector((state) => state?.post);
   const { postLists, appErr, serverErr, loading } = post;
+
+  const category = useSelector((state) => state?.category);
+  const {
+    categoryList,
+    appErr: catAppErr,
+    serverErr: catServerErr,
+    loading: catLoading,
+  } = category;
 
   return (
     <>
@@ -43,30 +57,34 @@ export default function PostsList() {
                     Categories
                   </h4>
                   <ul>
-                    <div>Loading</div>
-
-                    <div className="text-red-400 text-base">
-                      Categories Error goes here
-                    </div>
-
-                    <div className="text-xl text-gray-100 text-center">
-                      No category
-                    </div>
-
-                    <li>
-                      <p className="block cursor-pointer py-2 px-3 mb-4 rounded text-yellow-500 font-bold bg-gray-500">
-                        {/* {category?.title} */} category List
-                      </p>
-                    </li>
+                    {catLoading ? (
+                      <LoadingPart />
+                    ) : catAppErr || catServerErr ? (
+                      <h1>
+                        {catServerErr} {catAppErr}
+                      </h1>
+                    ) : categoryList?.length <= 0 ? (
+                      <h1>No Category Found</h1>
+                    ) : (
+                      categoryList?.map((category) => (
+                        <li>
+                          <p className="block cursor-pointer py-2 px-3 mb-4 rounded text-yellow-500 font-bold bg-gray-500">
+                            {category?.title}
+                          </p>
+                        </li>
+                      ))
+                    )}
                   </ul>
                 </div>
               </div>
               <div class="w-full lg:w-3/4 px-3">
                 {/* Post goes here */}
                 {loading ? (
-                  <h1>Loading...</h1>
+                  <LoadingPart />
                 ) : appErr || serverErr ? (
-                  <h1>Err</h1>
+                  <h1>
+                    {serverErr} {appErr}
+                  </h1>
                 ) : postLists?.length <= 0 ? (
                   <h1>No Post Found</h1>
                 ) : (
