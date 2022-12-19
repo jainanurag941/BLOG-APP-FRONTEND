@@ -45,10 +45,10 @@ export const createPostAction = createAsyncThunk(
 //fetch all post action
 export const fetchPostsAction = createAsyncThunk(
   "post/list",
-  async (post, { rejectWithValue, getState, dispatch }) => {
+  async (category, { rejectWithValue, getState, dispatch }) => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/posts`
+        `${process.env.REACT_APP_API_URL}/api/posts?category=${category}`
       );
 
       return data;
