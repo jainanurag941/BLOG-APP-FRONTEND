@@ -9,6 +9,7 @@ import { PencilAltIcon, TrashIcon } from "@heroicons/react/solid";
 import DateFormatter from "../../utils/DateFormatter";
 import LoadingComponent from "../../utils/LoadingComponent";
 import AddComment from "../Comments/AddComment";
+import CommentsList from "../Comments/CommentsList";
 
 const PostDetails = ({
   match: {
@@ -17,12 +18,15 @@ const PostDetails = ({
 }) => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(fetchPostDetailsAction(id));
-  }, [id, dispatch]);
-
   const post = useSelector((state) => state?.post);
   const { postDetails, loading, appErr, serverErr, isDeleted } = post;
+
+  const comment = useSelector((state) => state?.comment);
+  const { commentCreated } = comment;
+
+  useEffect(() => {
+    dispatch(fetchPostDetailsAction(id));
+  }, [id, dispatch, commentCreated]);
 
   //Get login user
   const user = useSelector((state) => state?.users);
@@ -107,8 +111,8 @@ const PostDetails = ({
           {/* Add comment Form component here */}
           <AddComment postId={id} />
           <div className="flex justify-center  items-center">
-            {/* <CommentsList comments={post?.comments} postId={post?._id} /> */}
-            CommentsList
+            {/* <CommentsList comments={postDetails?.comments} postId={post?._id} /> */}
+            <CommentsList comments={postDetails?.comments} />
           </div>
         </section>
       )}
