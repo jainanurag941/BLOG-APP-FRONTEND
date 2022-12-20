@@ -23,6 +23,14 @@ const PostDetails = ({
   const post = useSelector((state) => state?.post);
   const { postDetails, loading, appErr, serverErr, isDeleted } = post;
 
+  //Get login user
+  const user = useSelector((state) => state?.users);
+  const {
+    userAuth: { _id },
+  } = user;
+
+  const isCreatedBy = postDetails?.user?._id === _id;
+
   if (isDeleted) {
     return <Redirect to="/posts" />;
   }
@@ -73,22 +81,24 @@ const PostDetails = ({
                 <p className="mb-6 text-left  text-xl text-gray-200">
                   {postDetails?.description}
                   {/* Show delete and update btn if created user */}
-                  <p className="flex">
-                    <Link
-                      to={`/update-post/${postDetails?._id}`}
-                      className="p-3"
-                    >
-                      <PencilAltIcon className="h-8 mt-3 text-yellow-300" />
-                    </Link>
-                    <button
-                      onClick={() =>
-                        dispatch(deletePostAction(postDetails?._id))
-                      }
-                      className="ml-3"
-                    >
-                      <TrashIcon className="h-8 mt-3 text-red-600" />
-                    </button>
-                  </p>
+                  {isCreatedBy ? (
+                    <p className="flex">
+                      <Link
+                        to={`/update-post/${postDetails?._id}`}
+                        className="p-3"
+                      >
+                        <PencilAltIcon className="h-8 mt-3 text-yellow-300" />
+                      </Link>
+                      <button
+                        onClick={() =>
+                          dispatch(deletePostAction(postDetails?._id))
+                        }
+                        className="ml-3"
+                      >
+                        <TrashIcon className="h-8 mt-3 text-red-600" />
+                      </button>
+                    </p>
+                  ) : null}
                 </p>
               </div>
             </div>
