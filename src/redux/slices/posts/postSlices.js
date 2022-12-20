@@ -3,6 +3,7 @@ import axios from "axios";
 
 const resetPostAction = createAction("post/reset");
 const resetPostEdit = createAction("post/resetEdit");
+const resetPostDelete = createAction("post/resetDelete");
 
 //create post action
 export const createPostAction = createAsyncThunk(
@@ -65,6 +66,38 @@ export const updatePostAction = createAsyncThunk(
       );
 
       dispatch(resetPostEdit());
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+//delete post action
+export const deletePostAction = createAsyncThunk(
+  "post/delete",
+  async (postId, { rejectWithValue, getState, dispatch }) => {
+    //get user token
+    const user = getState()?.users;
+    const { userAuth } = user;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userAuth?.token}`,
+      },
+    };
+
+    try {
+      const { data } = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/api/posts/${postId}`,
+        config
+      );
+
+      dispatch(resetPostDelete());
 
       return data;
     } catch (error) {
@@ -216,6 +249,26 @@ const postSlice = createSlice({
       state.serverErr = undefined;
     });
     builder.addCase(updatePostAction.rejected, (state, action) => {
+      state.loading = false;
+      state.appErr = action?.payload?.message;
+      state.serverErr = action?.error?.message;
+    });
+
+    //Delete post
+    builder.addCase(deletePostAction.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(resetPostDelete, (state, action) => {
+      state.isDeleted = true;
+    });
+    builder.addCase(deletePostAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.isDeleted = false;
+      state.postDeleted = action?.payload;
+      state.appErr = undefined;
+      state.serverErr = undefined;
+    });
+    builder.addCase(deletePostAction.rejected, (state, action) => {
       state.loading = false;
       state.appErr = action?.payload?.message;
       state.serverErr = action?.error?.message;
