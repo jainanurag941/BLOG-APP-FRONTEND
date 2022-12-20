@@ -45,8 +45,10 @@ export default function UpdatePost(props) {
       const data = {
         title: values?.title,
         description: values?.description,
+        category: values?.category?.label,
         id,
       };
+
       dispatch(updatePostAction(data));
     },
     validationSchema: formSchema,
