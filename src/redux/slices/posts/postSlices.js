@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, createAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const resetPostAction = createAction("post/reset");
+const resetPostEdit = createAction("post/resetEdit");
 
 //create post action
 export const createPostAction = createAsyncThunk(
@@ -62,6 +63,8 @@ export const updatePostAction = createAsyncThunk(
         post,
         config
       );
+
+      dispatch(resetPostEdit());
 
       return data;
     } catch (error) {
@@ -202,8 +205,12 @@ const postSlice = createSlice({
     builder.addCase(updatePostAction.pending, (state, action) => {
       state.loading = true;
     });
+    builder.addCase(resetPostEdit, (state, action) => {
+      state.isUpdated = true;
+    });
     builder.addCase(updatePostAction.fulfilled, (state, action) => {
       state.loading = false;
+      state.isUpdated = false;
       state.postUpdated = action?.payload;
       state.appErr = undefined;
       state.serverErr = undefined;
