@@ -8,6 +8,7 @@ import { Link, Redirect } from "react-router-dom";
 import { PencilAltIcon, TrashIcon } from "@heroicons/react/solid";
 import DateFormatter from "../../utils/DateFormatter";
 import LoadingComponent from "../../utils/LoadingComponent";
+import AddComment from "../Comments/AddComment";
 
 const PostDetails = ({
   match: {
@@ -104,7 +105,7 @@ const PostDetails = ({
             </div>
           </div>
           {/* Add comment Form component here */}
-
+          <AddComment postId={id} />
           <div className="flex justify-center  items-center">
             {/* <CommentsList comments={post?.comments} postId={post?._id} /> */}
             CommentsList
