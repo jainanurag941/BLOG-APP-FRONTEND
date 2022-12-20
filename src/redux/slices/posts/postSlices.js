@@ -42,6 +42,37 @@ export const createPostAction = createAsyncThunk(
   }
 );
 
+//update post action
+export const updatePostAction = createAsyncThunk(
+  "post/updated",
+  async (post, { rejectWithValue, getState, dispatch }) => {
+    //get user token
+    const user = getState()?.users;
+    const { userAuth } = user;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userAuth?.token}`,
+      },
+    };
+
+    try {
+      const { data } = await axios.put(
+        `${process.env.REACT_APP_API_URL}/api/posts/${post?.id}`,
+        post,
+        config
+      );
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 //fetch all post action
 export const fetchPostsAction = createAsyncThunk(
   "post/list",
@@ -162,6 +193,22 @@ const postSlice = createSlice({
       state.serverErr = undefined;
     });
     builder.addCase(createPostAction.rejected, (state, action) => {
+      state.loading = false;
+      state.appErr = action?.payload?.message;
+      state.serverErr = action?.error?.message;
+    });
+
+    //Update post
+    builder.addCase(updatePostAction.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(updatePostAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.postUpdated = action?.payload;
+      state.appErr = undefined;
+      state.serverErr = undefined;
+    });
+    builder.addCase(updatePostAction.rejected, (state, action) => {
       state.loading = false;
       state.appErr = action?.payload?.message;
       state.serverErr = action?.error?.message;

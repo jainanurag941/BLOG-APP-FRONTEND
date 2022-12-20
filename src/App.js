@@ -9,6 +9,7 @@ import PrivateProtectRoute from "./components/Navigation/ProtectedRoutes/Private
 import CreatePost from "./components/Posts/CreatePost";
 import PostDetails from "./components/Posts/PostDetails";
 import PostsList from "./components/Posts/PostsList";
+import UpdatePost from "./components/Posts/UpdatePost";
 import Login from "./components/Users/Login/Login";
 import Register from "./components/Users/Register/Register";
 
@@ -17,6 +18,11 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <Switch>
+        <PrivateProtectRoute
+          exact
+          path="/update-post/:id"
+          component={UpdatePost}
+        />
         <AdminRoute exact path="/add-category" component={AddNewCategory} />
         <PrivateProtectRoute exact path="/create-post" component={CreatePost} />
         <AdminRoute
