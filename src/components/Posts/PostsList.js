@@ -91,9 +91,7 @@ export default function PostsList() {
               </div>
               <div class="w-full lg:w-3/4 px-3">
                 {/* Post goes here */}
-                {loading ? (
-                  <LoadingPart />
-                ) : appErr || serverErr ? (
+                {appErr || serverErr ? (
                   <h1>
                     {serverErr} {appErr}
                   </h1>
@@ -165,7 +163,10 @@ export default function PostsList() {
                         </Link>
                         <p class="text-gray-300">{post?.description}</p>
                         {/* Read more */}
-                        <Link className="text-indigo-500 hover:underline">
+                        <Link
+                          to={`/posts/${post?._id}`}
+                          className="text-indigo-500 hover:underline"
+                        >
                           Read More..
                         </Link>
                         {/* User Avatar */}
