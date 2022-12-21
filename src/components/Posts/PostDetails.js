@@ -22,11 +22,11 @@ const PostDetails = ({
   const { postDetails, loading, appErr, serverErr, isDeleted } = post;
 
   const comment = useSelector((state) => state?.comment);
-  const { commentCreated } = comment;
+  const { commentCreated, commentDeleted } = comment;
 
   useEffect(() => {
     dispatch(fetchPostDetailsAction(id));
-  }, [id, dispatch, commentCreated]);
+  }, [id, dispatch, commentCreated, commentDeleted]);
 
   //Get login user
   const user = useSelector((state) => state?.users);
