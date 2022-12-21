@@ -2,6 +2,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import AddNewCategory from "./components/Categories/AddNewCategory";
 import CategoryList from "./components/Categories/CategoryList";
 import UpdateCategory from "./components/Categories/UpdateCategory";
+import UpdateComment from "./components/Comments/UpdateComment";
 import HomePage from "./components/HomePage/HomePage";
 import Navbar from "./components/Navigation/Navbar";
 import AdminRoute from "./components/Navigation/ProtectedRoutes/AdminRoute";
@@ -25,6 +26,11 @@ function App() {
         />
         <AdminRoute exact path="/add-category" component={AddNewCategory} />
         <PrivateProtectRoute exact path="/create-post" component={CreatePost} />
+        <PrivateProtectRoute
+          exact
+          path="/update-comment/:id"
+          component={UpdateComment}
+        />
         <AdminRoute
           exact
           path="/update-category/:id"

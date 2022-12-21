@@ -30,11 +30,9 @@ const PostDetails = ({
 
   //Get login user
   const user = useSelector((state) => state?.users);
-  const {
-    userAuth: { _id },
-  } = user;
+  const { userAuth } = user;
 
-  const isCreatedBy = postDetails?.user?._id === _id;
+  const isCreatedBy = postDetails?.user?._id === userAuth?._id;
 
   if (isDeleted) {
     return <Redirect to="/posts" />;
