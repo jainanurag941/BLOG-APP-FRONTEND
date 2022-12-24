@@ -126,6 +126,37 @@ export const userProfileAction = createAsyncThunk(
   }
 );
 
+//follow
+export const followUserAction = createAsyncThunk(
+  "user/follow",
+  async (id, { rejectWithValue, getState, dispatch }) => {
+    //get user token
+    const user = getState()?.users;
+    const { userAuth } = user;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userAuth?.token}`,
+      },
+    };
+
+    try {
+      const { data } = await axios.put(
+        `${process.env.REACT_APP_API_URL}/api/users/follow`,
+        { followId: id },
+        config
+      );
+
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 //logout action
 export const logoutAction = createAsyncThunk(
   "/user/logout",
@@ -265,6 +296,24 @@ const usersSlices = createSlice({
       state.serverErr = action?.error?.message;
     });
 
+    //user follow
+    builder.addCase(followUserAction.pending, (state, action) => {
+      state.loading = true;
+      state.appErr = undefined;
+      state.serverErr = undefined;
+    });
+    builder.addCase(followUserAction.fulfilled, (state, action) => {
+      state.followed = action?.payload;
+      state.loading = false;
+      state.appErr = undefined;
+      state.serverErr = undefined;
+    });
+    builder.addCase(followUserAction.rejected, (state, action) => {
+      state.loading = false;
+      state.appErr = action?.payload?.message;
+      state.serverErr = action?.error?.message;
+    });
+
     //login
     builder.addCase(loginUserAction.pending, (state, action) => {
       state.loading = true;
@@ -285,20 +334,20 @@ const usersSlices = createSlice({
 
     //profile
     builder.addCase(userProfileAction.pending, (state, action) => {
-      state.loading = true;
-      state.appErr = undefined;
-      state.serverErr = undefined;
+      state.profileLoading = true;
+      state.profileAppErr = undefined;
+      state.profileServerErr = undefined;
     });
     builder.addCase(userProfileAction.fulfilled, (state, action) => {
       state.profile = action?.payload;
-      state.loading = false;
-      state.appErr = undefined;
-      state.serverErr = undefined;
+      state.profileLoading = false;
+      state.profileAppErr = undefined;
+      state.profileServerErr = undefined;
     });
     builder.addCase(userProfileAction.rejected, (state, action) => {
-      state.loading = false;
-      state.appErr = action?.payload?.message;
-      state.serverErr = action?.error?.message;
+      state.profileLoading = false;
+      state.profileAppErr = action?.payload?.message;
+      state.profileServerErr = action?.error?.message;
     });
 
     //upload

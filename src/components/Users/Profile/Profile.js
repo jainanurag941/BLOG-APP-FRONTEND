@@ -8,7 +8,10 @@ import {
 } from "@heroicons/react/outline";
 import { MailIcon, EyeIcon } from "@heroicons/react/solid";
 import { useDispatch, useSelector } from "react-redux";
-import { userProfileAction } from "../../../redux/slices/users/usersSlices";
+import {
+  followUserAction,
+  userProfileAction,
+} from "../../../redux/slices/users/usersSlices";
 import DateFormatter from "../../../utils/DateFormatter";
 import LoadingComponent from "../../../utils/LoadingComponent";
 
@@ -24,17 +27,17 @@ export default function Profile({
   }, [id, dispatch]);
 
   const users = useSelector((state) => state?.users);
-  const { profile, loading, appErr, serverErr } = users;
+  const { profile, profileLoading, profileAppErr, profileServerErr } = users;
 
   return (
     <>
       <div>
-        {loading ? (
+        {profileLoading ? (
           <LoadingComponent />
-        ) : appErr || serverErr ? (
+        ) : profileAppErr || profileServerErr ? (
           <div className="min-h-screen bg-green-600 flex justify-center items-center">
             <h2 className="text-yellow-400 text-2xl">
-              {serverErr} {appErr}
+              {profileServerErr} {profileAppErr}
             </h2>
           </div>
         ) : (
@@ -130,7 +133,7 @@ export default function Profile({
 
                               <>
                                 <button
-                                  // onClick={followHandler}
+                                  onClick={() => dispatch(followUserAction(id))}
                                   type="button"
                                   className="inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
                                 >
@@ -139,6 +142,9 @@ export default function Profile({
                                     aria-hidden="true"
                                   />
                                   <span>Follow </span>
+                                  {/* <span className="pl-2">
+                                    {profile?.followers?.length}
+                                  </span> */}
                                 </button>
                               </>
                             </div>
