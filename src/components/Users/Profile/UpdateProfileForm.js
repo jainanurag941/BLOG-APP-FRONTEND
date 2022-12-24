@@ -28,7 +28,7 @@ const UpdateProfileForm = ({
   }, [dispatch, id]);
 
   const users = useSelector((state) => state?.users);
-  const { userDetails } = users;
+  const { userDetails, loading, appErr, serverErr, isUpdated } = users;
 
   //formik
   const formik = useFormik({
@@ -45,12 +45,26 @@ const UpdateProfileForm = ({
     validationSchema: formSchema,
   });
 
+  if (isUpdated) {
+    return <Redirect to={`/profile/${id}`} />;
+  }
+
   return (
     <div className="min-h-screen bg-gray-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h3 className="mt-6 text-center text-3xl font-extrabold text-gray-300">
-          you want to update your profile?
+        <h3 className="mt-6 text-center text-2xl font-extrabold text-gray-300">
+          Hei buddy{" "}
+          <span className="text-green-300">
+            {userDetails?.firstName} {userDetails?.lastName}
+          </span>{" "}
+          Do you want to update your profile?
         </h3>
+        {/* Check Error */}
+        {appErr || serverErr ? (
+          <h2 className="text-red-300 text-center">
+            {serverErr} {appErr}
+          </h2>
+        ) : null}
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -153,12 +167,21 @@ const UpdateProfileForm = ({
             </div>
             <div>
               {/* submit btn */}
-              <button
-                type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                Update
-              </button>
+              {loading ? (
+                <button
+                  disabled
+                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600"
+                >
+                  Loading Please Wait...
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  Update
+                </button>
+              )}
             </div>
           </form>
 

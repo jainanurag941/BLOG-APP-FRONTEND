@@ -28,13 +28,15 @@ export default function Profile({
 
   return (
     <>
-      <div className="min-h-screen bg-green-600 flex justify-center items-center">
+      <div>
         {loading ? (
           <LoadingComponent />
         ) : appErr || serverErr ? (
-          <h2 className="text-yellow-400 text-2xl">
-            {serverErr} {appErr}
-          </h2>
+          <div className="min-h-screen bg-green-600 flex justify-center items-center">
+            <h2 className="text-yellow-400 text-2xl">
+              {serverErr} {appErr}
+            </h2>
+          </div>
         ) : (
           <div className="h-screen flex overflow-hidden bg-white">
             {/* Static sidebar for desktop */}
