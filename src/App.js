@@ -13,6 +13,7 @@ import PostsList from "./components/Posts/PostsList";
 import UpdatePost from "./components/Posts/UpdatePost";
 import Login from "./components/Users/Login/Login";
 import Profile from "./components/Users/Profile/Profile";
+import UpdateProfileForm from "./components/Users/Profile/UpdateProfileForm";
 import UploadProfilePhoto from "./components/Users/Profile/UploadProfilePhoto";
 import Register from "./components/Users/Register/Register";
 
@@ -30,6 +31,11 @@ function App() {
           exact
           path="/upload-profile-photo"
           component={UploadProfilePhoto}
+        />
+        <PrivateProtectRoute
+          exact
+          path="/update-profile/:id"
+          component={UpdateProfileForm}
         />
         <PrivateProtectRoute exact path="/profile/:id" component={Profile} />
         <AdminRoute exact path="/add-category" component={AddNewCategory} />
