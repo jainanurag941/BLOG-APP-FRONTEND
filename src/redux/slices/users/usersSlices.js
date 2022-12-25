@@ -157,6 +157,35 @@ export const followUserAction = createAsyncThunk(
   }
 );
 
+// unFollow
+export const unfollowUserAction = createAsyncThunk(
+  "user/unfollow",
+  async (unfollowId, { rejectWithValue, getState, dispatch }) => {
+    //get user token
+    const user = getState()?.users;
+    const { userAuth } = user;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userAuth?.token}`,
+      },
+    };
+    //http call
+    try {
+      const { data } = await axios.put(
+        `${process.env.REACT_APP_API_URL}/api/users/unfollow`,
+        { unfollowId },
+        config
+      );
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 //logout action
 export const logoutAction = createAsyncThunk(
   "/user/logout",
@@ -304,14 +333,35 @@ const usersSlices = createSlice({
     });
     builder.addCase(followUserAction.fulfilled, (state, action) => {
       state.followed = action?.payload;
+      state.unFollowed = undefined;
       state.loading = false;
       state.appErr = undefined;
       state.serverErr = undefined;
     });
     builder.addCase(followUserAction.rejected, (state, action) => {
       state.loading = false;
+      state.unFollowed = undefined;
       state.appErr = action?.payload?.message;
       state.serverErr = action?.error?.message;
+    });
+
+    //user unFollow
+    builder.addCase(unfollowUserAction.pending, (state, action) => {
+      state.unfollowLoading = true;
+      state.unFollowedAppErr = undefined;
+      state.unfollowServerErr = undefined;
+    });
+    builder.addCase(unfollowUserAction.fulfilled, (state, action) => {
+      state.unfollowLoading = false;
+      state.unFollowed = action?.payload;
+      state.followed = undefined;
+      state.unFollowedAppErr = undefined;
+      state.unfollowServerErr = undefined;
+    });
+    builder.addCase(unfollowUserAction.rejected, (state, action) => {
+      state.unfollowLoading = false;
+      state.unFollowedAppErr = action?.payload?.message;
+      state.unfollowServerErr = action?.error?.message;
     });
 
     //login
