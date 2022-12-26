@@ -41,6 +41,7 @@ export default function Profile(props) {
       pathname: "/send-email",
       state: {
         email: profile?.email,
+        id: profile?._id,
       },
     });
   };
