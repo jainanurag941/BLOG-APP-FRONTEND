@@ -18,6 +18,7 @@ import Profile from "./components/Users/Profile/Profile";
 import UpdateProfileForm from "./components/Users/Profile/UpdateProfileForm";
 import UploadProfilePhoto from "./components/Users/Profile/UploadProfilePhoto";
 import Register from "./components/Users/Register/Register";
+import UsersList from "./components/Users/UsersList/UsersList";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
           component={UploadProfilePhoto}
         />
         <AdminRoute exact path="/send-email" component={SendEmail} />
+        <AdminRoute exact path="/users" component={UsersList} />
         <PrivateProtectRoute
           exact
           path="/update-profile/:id"
