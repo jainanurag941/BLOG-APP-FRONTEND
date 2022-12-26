@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import {
   HeartIcon,
   EmojiSadIcon,
@@ -16,12 +16,9 @@ import {
 import DateFormatter from "../../../utils/DateFormatter";
 import LoadingComponent from "../../../utils/LoadingComponent";
 
-export default function Profile({
-  computedMatch: {
-    params: { id },
-  },
-}) {
+export default function Profile(props) {
   const dispatch = useDispatch();
+  const id = props.computedMatch.params.id;
 
   const users = useSelector((state) => state?.users);
   const {
@@ -37,6 +34,16 @@ export default function Profile({
   useEffect(() => {
     dispatch(userProfileAction(id));
   }, [id, dispatch, followed, unFollowed]);
+
+  const history = useHistory();
+  const sendMailNavigate = () => {
+    history.push({
+      pathname: "/send-email",
+      state: {
+        email: profile?.email,
+      },
+    });
+  };
 
   //isLogin
   // const isLoginUser = userAuth?._id === profile?._id;
@@ -176,9 +183,9 @@ export default function Profile({
                               </Link>
                             </>
                             {/* Send Mail */}
-                            <Link
-                              // to={`/send-mail?email=${profile?.email}`}
-                              className="inline-flex justify-center bg-indigo-900 px-4 py-2 border border-yellow-700 shadow-sm text-sm font-medium rounded-md text-gray-700  hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
+                            <button
+                              onClick={sendMailNavigate}
+                              className="inline-flex justify-center bg-indigo-900 px-4 py-2 border border-yellow-700 shadow-sm text-sm font-medium rounded-md text-gray-700  hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
                             >
                               <MailIcon
                                 className="-ml-1 mr-2 h-5 w-5 text-gray-200"
@@ -187,7 +194,7 @@ export default function Profile({
                               <span className="text-base mr-2  text-bold text-yellow-500">
                                 Send Message
                               </span>
-                            </Link>
+                            </button>
                           </div>
                         </div>
                       </div>
