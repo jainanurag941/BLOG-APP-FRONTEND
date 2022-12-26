@@ -37,7 +37,7 @@ const Register = () => {
   const { loading, appErr, serverErr, registered } = storeData;
 
   if (registered) {
-    return <Redirect to="/profile" />;
+    return <Redirect to="/login" />;
   }
 
   return (

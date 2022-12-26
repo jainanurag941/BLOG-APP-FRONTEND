@@ -33,7 +33,7 @@ const Login = () => {
   const { userAuth, loading, serverErr, appErr } = store;
 
   if (userAuth) {
-    return <Redirect to="/profile" />;
+    return <Redirect to={`/profile/${userAuth?._id}`} />;
   }
 
   return (
