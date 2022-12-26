@@ -11,6 +11,7 @@ import CreatePost from "./components/Posts/CreatePost";
 import PostDetails from "./components/Posts/PostDetails";
 import PostsList from "./components/Posts/PostsList";
 import UpdatePost from "./components/Posts/UpdatePost";
+import AccountVerified from "./components/Users/AccountVerification/AccountVerified";
 import SendEmail from "./components/Users/Emailing/SendEmail";
 import Login from "./components/Users/Login/Login";
 import Profile from "./components/Users/Profile/Profile";
@@ -27,6 +28,11 @@ function App() {
           exact
           path="/update-post/:id"
           component={UpdatePost}
+        />
+        <PrivateProtectRoute
+          exact
+          path="/verify-account/:token"
+          component={AccountVerified}
         />
         <PrivateProtectRoute
           exact
