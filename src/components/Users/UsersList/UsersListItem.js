@@ -1,8 +1,19 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { MailIcon } from "@heroicons/react/solid";
 
 const UsersListItem = (user) => {
+  const history = useHistory();
+  const sendMailNavigator = () => {
+    history.push({
+      pathname: "/send-email",
+      state: {
+        email: user?.user?.email,
+        id: user?.user?._id,
+      },
+    });
+  };
+
   return (
     <>
       <div className="p-8 mb-4 bg-white shadow rounded">
@@ -10,17 +21,19 @@ const UsersListItem = (user) => {
           <div className="w-full lg:w-3/12 flex px-4 mb-6 lg:mb-0">
             <img
               className="w-10 h-10 mr-4 object-cover rounded-full"
-              // src={user?.user?.profilePhoto}
+              src={user?.user?.profilePhoto}
               alt="profile "
             />
             <div>
-              <p className="text-sm font-medium">Full name</p>
-              <p className="text-xs text-gray-500">Email</p>
+              <p className="text-sm font-medium">
+                {user?.user?.firstName} {user?.user?.lastName}
+              </p>
+              <p className="text-xs text-gray-500">{user?.user?.email}</p>
             </div>
           </div>
           <div className="w-1/2 lg:w-2/12 px-4 mb-6 lg:mb-0">
             <p className="py-1 px-2 text-xs text-purple-500 bg-purple-50 rounded-full">
-              {/* {user?.user?.accountType} */}
+              {user?.user?.accountType}
               {/* <span>{user?.user?.isBlocked && "Blocked"}</span> */}
             </p>
           </div>
@@ -61,8 +74,8 @@ const UsersListItem = (user) => {
               </button>
             )}
 
-            <Link
-              to={`/send-mail?email=${user?.user?.email}`}
+            <button
+              onClick={sendMailNavigator}
               className="inline-flex  justify-center bg-green-700 px-2   border border-yellow-700 shadow-sm text-sm font-medium rounded-md text-gray-700  hover:bg-green-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
             >
               <MailIcon
@@ -72,7 +85,7 @@ const UsersListItem = (user) => {
               <span className="text-base mr-2  text-bold text-yellow-500">
                 Message
               </span>
-            </Link>
+            </button>
           </div>
           <div className="w-full lg:w-1/12 px-4">
             <div className="flex items-center">
