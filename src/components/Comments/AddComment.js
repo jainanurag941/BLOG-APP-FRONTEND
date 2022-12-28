@@ -11,6 +11,9 @@ const formSchema = Yup.object({
 const AddComment = ({ postId }) => {
   const dispatch = useDispatch();
 
+  const comment = useSelector((state) => state?.comment);
+  const { loading, appErr, serverErr } = comment;
+
   const formik = useFormik({
     initialValues: {
       description: "",
@@ -28,6 +31,11 @@ const AddComment = ({ postId }) => {
 
   return (
     <div className="flex flex-col justify-center items-center">
+      {appErr || serverErr ? (
+        <h2 className="text-red-400 pb-2">
+          {serverErr} {appErr}
+        </h2>
+      ) : null}
       {/* Form start here */}
       <form
         onSubmit={formik.handleSubmit}
@@ -45,12 +53,21 @@ const AddComment = ({ postId }) => {
           placeholder="Add New comment"
         />
         {/* submit btn */}
-        <button
-          type="submit"
-          className="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        >
-          Submit
-        </button>
+        {loading ? (
+          <button
+            disabled
+            className="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-gray-600"
+          >
+            Loading Please Wait...
+          </button>
+        ) : (
+          <button
+            type="submit"
+            className="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Submit
+          </button>
+        )}
       </form>
 
       <div className="text-red-400 mb-2 mt-2">
