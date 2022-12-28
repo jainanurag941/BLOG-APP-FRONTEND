@@ -67,6 +67,38 @@ export const updateUserAction = createAsyncThunk(
   }
 );
 
+//update password
+export const updatePasswordAction = createAsyncThunk(
+  "password/update",
+  async (password, { rejectWithValue, getState, dispatch }) => {
+    //get user token
+    const user = getState()?.users;
+    const { userAuth } = user;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userAuth?.token}`,
+      },
+    };
+
+    try {
+      const { data } = await axios.put(
+        `${process.env.REACT_APP_API_URL}/api/users/password`,
+        { password },
+        config
+      );
+
+      dispatch(resetUserAction());
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 //login action
 export const loginUserAction = createAsyncThunk(
   "user/login",
@@ -394,6 +426,28 @@ const usersSlices = createSlice({
       state.serverErr = undefined;
     });
     builder.addCase(updateUserAction.rejected, (state, action) => {
+      state.loading = false;
+      state.appErr = action?.payload?.message;
+      state.serverErr = action?.error?.message;
+    });
+
+    //update password
+    builder.addCase(updatePasswordAction.pending, (state, action) => {
+      state.loading = true;
+      state.appErr = undefined;
+      state.serverErr = undefined;
+    });
+    builder.addCase(resetUserAction, (state, action) => {
+      state.isUpdated = true;
+    });
+    builder.addCase(updatePasswordAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.isUpdated = false;
+      state.passwordUpdated = action?.payload;
+      state.appErr = undefined;
+      state.serverErr = undefined;
+    });
+    builder.addCase(updatePasswordAction.rejected, (state, action) => {
       state.loading = false;
       state.appErr = action?.payload?.message;
       state.serverErr = action?.error?.message;

@@ -14,6 +14,7 @@ import UpdatePost from "./components/Posts/UpdatePost";
 import AccountVerified from "./components/Users/AccountVerification/AccountVerified";
 import SendEmail from "./components/Users/Emailing/SendEmail";
 import Login from "./components/Users/Login/Login";
+import UpdatePassword from "./components/Users/PasswordManagement/UpdatePassword";
 import Profile from "./components/Users/Profile/Profile";
 import UpdateProfileForm from "./components/Users/Profile/UpdateProfileForm";
 import UploadProfilePhoto from "./components/Users/Profile/UploadProfilePhoto";
@@ -39,6 +40,11 @@ function App() {
           exact
           path="/upload-profile-photo"
           component={UploadProfilePhoto}
+        />
+        <PrivateProtectRoute
+          exact
+          path="/update-password"
+          component={UpdatePassword}
         />
         <AdminRoute exact path="/send-email" component={SendEmail} />
         <AdminRoute exact path="/users" component={UsersList} />
