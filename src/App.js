@@ -14,6 +14,7 @@ import UpdatePost from "./components/Posts/UpdatePost";
 import AccountVerified from "./components/Users/AccountVerification/AccountVerified";
 import SendEmail from "./components/Users/Emailing/SendEmail";
 import Login from "./components/Users/Login/Login";
+import ResetPassword from "./components/Users/PasswordManagement/ResetPassword";
 import ResetPasswordForm from "./components/Users/PasswordManagement/ResetPasswordForm";
 import UpdatePassword from "./components/Users/PasswordManagement/UpdatePassword";
 import Profile from "./components/Users/Profile/Profile";
@@ -37,6 +38,7 @@ function App() {
           path="/password-reset-token"
           component={ResetPasswordForm}
         />
+        <Route exact path="/reset-password/:token" component={ResetPassword} />
         <PrivateProtectRoute
           exact
           path="/verify-account/:token"
