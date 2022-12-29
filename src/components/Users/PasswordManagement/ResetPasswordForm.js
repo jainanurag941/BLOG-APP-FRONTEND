@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Link } from "react-router-dom";
 import { LockClosedIcon } from "@heroicons/react/solid";
+import { passwordResetTokenAction } from "../../../redux/slices/users/usersSlices";
 
 //Form Schema
 const formSchema = Yup.object({
@@ -18,11 +19,13 @@ const ResetPasswordForm = () => {
       email: "",
     },
     onSubmit: (values) => {
-      console.log(values);
-      // dispatch(updatePasswordAction(values?.password));
+      dispatch(passwordResetTokenAction(values?.email));
     },
     validationSchema: formSchema,
   });
+
+  const users = useSelector((state) => state?.users);
+  const { passwordToken, loading, appErr, serverErr } = users;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -36,6 +39,23 @@ const ResetPasswordForm = () => {
               Reset your password if you have forgotten
             </a>
           </p>
+        </div>
+        {/* Error message */}
+        <div className="text-red-500 text-center">
+          {appErr || serverErr ? (
+            <h3>
+              {serverErr} {appErr}
+            </h3>
+          ) : null}
+        </div>
+        {/* Success Message */}
+        <div className="text-green-700 text-center">
+          {passwordToken && (
+            <h3>
+              Email is successfully sent to your email. Verify it within 10
+              minutes.
+            </h3>
+          )}
         </div>
         <form onSubmit={formik.handleSubmit} className="mt-8 space-y-6">
           <input type="hidden" name="remember" defaultValue="true" />
@@ -72,18 +92,33 @@ const ResetPasswordForm = () => {
           </div>
 
           <div>
-            <button
-              type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                <LockClosedIcon
-                  className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
-                  aria-hidden="true"
-                />
-              </span>
-              Reset Password
-            </button>
+            {loading ? (
+              <button
+                disabled
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600"
+              >
+                <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+                  <LockClosedIcon
+                    className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
+                    aria-hidden="true"
+                  />
+                </span>
+                Loading Please Wait...
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+                  <LockClosedIcon
+                    className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
+                    aria-hidden="true"
+                  />
+                </span>
+                Reset Password
+              </button>
+            )}
           </div>
         </form>
       </div>
