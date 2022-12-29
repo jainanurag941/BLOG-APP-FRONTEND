@@ -3,7 +3,6 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
-import poster from "../../../img/poster.png";
 import { loginUserAction } from "../../../redux/slices/users/usersSlices";
 
 //Form Schema
@@ -39,13 +38,7 @@ const Login = () => {
   return (
     <>
       <section className="min-h-screen relative py-20 2xl:py-40 bg-gray-900 overflow-hidden">
-        <div className="absolute top-0 left-0 lg:bottom-0 h-full lg:h-auto w-full lg:w-4/12 bg-violet-500 lg:overflow-hidden">
-          <img
-            className="hidden lg:block h-full w-full object-cover"
-            src={poster}
-            alt=""
-          />
-        </div>
+        <div className="absolute top-0 left-0 lg:bottom-0 h-full lg:h-auto w-full lg:w-4/12 bg-violet-500 lg:overflow-hidden"></div>
         <div className="relative container px-4 mx-auto">
           <div className="max-w-5xl mx-auto">
             <div className="flex flex-wrap items-center -mx-4">

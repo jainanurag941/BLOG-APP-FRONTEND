@@ -18,7 +18,7 @@ import LoadingComponent from "../../../utils/LoadingComponent";
 
 export default function Profile(props) {
   const dispatch = useDispatch();
-  const id = props.computedMatch.params.id;
+  const id = props?.computedMatch?.params?.id;
 
   const users = useSelector((state) => state?.users);
   const {
@@ -233,8 +233,8 @@ export default function Profile(props) {
                           <h1>No Viewer</h1>
                         ) : (
                           profile?.viewedBy?.map((user) => (
-                            <li>
-                              <Link>
+                            <li key={user?._id}>
+                              <Link to={`/profile/${user?._id}`}>
                                 <div className="flex mb-2 items-center space-x-4 lg:space-x-6">
                                   <img
                                     className="w-16 h-16 rounded-full lg:w-20 lg:h-20"
@@ -266,9 +266,12 @@ export default function Profile(props) {
                         <h2 className="text-center text-xl">No Post Found</h2>
                       ) : (
                         profile?.posts?.map((post) => (
-                          <div className="flex flex-wrap  -mx-3 mt-3  lg:mb-6">
+                          <div
+                            key={post?._id}
+                            className="flex flex-wrap  -mx-3 mt-3  lg:mb-6"
+                          >
                             <div className="mb-2   w-full lg:w-1/4 px-3">
-                              <Link>
+                              <Link to={`/posts/${post?._id}`}>
                                 <img
                                   className="object-cover h-40 rounded"
                                   src={post?.image}
@@ -278,7 +281,7 @@ export default function Profile(props) {
                             </div>
                             <div className="w-full lg:w-3/4 px-3">
                               <Link
-                                // to={`/post/${post?._id}`}
+                                to={`/posts/${post?._id}`}
                                 className="hover:underline"
                               >
                                 <h3 className="mb-1 text-2xl text-green-600 font-bold font-heading">

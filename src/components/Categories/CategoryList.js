@@ -67,7 +67,7 @@ const CategoryList = () => {
                     {/* Loop through categoriesList */}
 
                     {categoryList?.map((category) => (
-                      <tr className="bg-gray-50">
+                      <tr key={category?._id} className="bg-gray-50">
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
                             <div className="flex-shrink-0 h-10 w-10">

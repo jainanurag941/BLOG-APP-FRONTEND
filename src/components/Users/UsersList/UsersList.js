@@ -17,7 +17,7 @@ const UsersList = () => {
 
   return (
     <>
-      <section class="py-8 bg-gray-900 min-h-screen">
+      <section className="py-8 bg-gray-900 min-h-screen">
         {loading ? (
           <LoadingComponent />
         ) : appErr || serverErr ? (
@@ -28,9 +28,9 @@ const UsersList = () => {
           <h2>No User Found</h2>
         ) : (
           usersList?.map((user) => (
-            <>
+            <div key={user?._id}>
               <UsersListItem user={user} />
-            </>
+            </div>
           ))
         )}
       </section>
