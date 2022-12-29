@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, createAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const resetUserAction = createAction("user/profile/reset");
+const resetPasswordAction = createAction("password/reset");
 
 //register action
 export const registerUserAction = createAsyncThunk(
@@ -88,7 +89,7 @@ export const updatePasswordAction = createAsyncThunk(
         config
       );
 
-      dispatch(resetUserAction());
+      dispatch(resetPasswordAction());
       return data;
     } catch (error) {
       if (!error?.response) {
@@ -437,12 +438,12 @@ const usersSlices = createSlice({
       state.appErr = undefined;
       state.serverErr = undefined;
     });
-    builder.addCase(resetUserAction, (state, action) => {
-      state.isUpdated = true;
+    builder.addCase(resetPasswordAction, (state, action) => {
+      state.isPasswordUpdated = true;
     });
     builder.addCase(updatePasswordAction.fulfilled, (state, action) => {
       state.loading = false;
-      state.isUpdated = false;
+      state.isPasswordUpdated = false;
       state.passwordUpdated = action?.payload;
       state.appErr = undefined;
       state.serverErr = undefined;

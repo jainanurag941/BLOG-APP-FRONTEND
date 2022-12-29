@@ -2,6 +2,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
+import { updatePasswordAction } from "../../../redux/slices/users/usersSlices";
 
 //Form Schema
 const formSchema = Yup.object({
@@ -17,11 +18,24 @@ const UpdatePassword = () => {
       password: "",
     },
     onSubmit: (values) => {
-      console.log(values);
-      // dispatch(loginUserAction(values));
+      dispatch(updatePasswordAction(values?.password));
     },
     validationSchema: formSchema,
   });
+
+  const users = useSelector((state) => state?.users);
+  const {
+    isPasswordUpdated,
+    passwordUpdated,
+    loading,
+    appErr,
+    serverErr,
+    userAuth,
+  } = users;
+
+  if (isPasswordUpdated) {
+    return <Redirect to={`/profile/${userAuth?._id}`} />;
+  }
 
   return (
     <div className="min-h-screen bg-gray-700  flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -29,6 +43,13 @@ const UpdatePassword = () => {
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-300">
           Change your password
         </h2>
+        <h3 className="text-center pt-2 text-red-400">
+          {appErr || serverErr ? (
+            <p>
+              {serverErr} {appErr}
+            </p>
+          ) : null}
+        </h3>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -71,12 +92,21 @@ const UpdatePassword = () => {
             </div>
             <div>
               {/* Submit btn */}
-              <button
-                type="submit"
-                className="inline-flex bg-indigo-700 justify-center w-full px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-200  hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
-              >
-                <span>Update Password</span>
-              </button>
+              {loading ? (
+                <button
+                  disabled
+                  className="inline-flex bg-gray-700 justify-center w-full px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-200"
+                >
+                  <span>Loading Please Wait...</span>
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="inline-flex bg-indigo-700 justify-center w-full px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-200  hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
+                >
+                  <span>Update Password</span>
+                </button>
+              )}
             </div>
           </form>
         </div>
