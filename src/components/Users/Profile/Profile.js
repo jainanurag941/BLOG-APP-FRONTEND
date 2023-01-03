@@ -193,18 +193,20 @@ export default function Profile(props) {
                               )}
                             </>
                             {/* Send Mail */}
-                            <button
-                              onClick={sendMailNavigate}
-                              className="inline-flex justify-center bg-indigo-900 px-4 py-2 border border-yellow-700 shadow-sm text-sm font-medium rounded-md text-gray-700  hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
-                            >
-                              <MailIcon
-                                className="-ml-1 mr-2 h-5 w-5 text-gray-200"
-                                aria-hidden="true"
-                              />
-                              <span className="text-base mr-2  text-bold text-yellow-500">
-                                Send Message
-                              </span>
-                            </button>
+                            {!isLoginUser && (
+                              <button
+                                onClick={sendMailNavigate}
+                                className="inline-flex justify-center bg-indigo-900 px-4 py-2 border border-yellow-700 shadow-sm text-sm font-medium rounded-md text-gray-700  hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
+                              >
+                                <MailIcon
+                                  className="-ml-1 mr-2 h-5 w-5 text-gray-200"
+                                  aria-hidden="true"
+                                />
+                                <span className="text-base mr-2  text-bold text-yellow-500">
+                                  Send Message
+                                </span>
+                              </button>
+                            )}
                           </div>
                         </div>
                       </div>

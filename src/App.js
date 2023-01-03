@@ -54,7 +54,7 @@ function App() {
           path="/update-password"
           component={UpdatePassword}
         />
-        <AdminRoute exact path="/send-email" component={SendEmail} />
+        <PrivateProtectRoute exact path="/send-email" component={SendEmail} />
         <AdminRoute exact path="/users" component={UsersList} />
         <PrivateProtectRoute
           exact
