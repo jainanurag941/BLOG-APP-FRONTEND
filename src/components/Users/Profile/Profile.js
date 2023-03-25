@@ -321,14 +321,16 @@ export default function Profile(props) {
                             </li>
                           ))
                         )}
-                        <Pagination
-                          viewersPerPage={viewersPerPage}
-                          totalViewers={profile?.viewedBy?.length}
-                          paginate={paginate}
-                          prePage={prePage}
-                          nextPage={nextPage}
-                          currentPage={currentPage}
-                        />
+                        {currentPageViewers?.length > 0 && (
+                          <Pagination
+                            viewersPerPage={viewersPerPage}
+                            totalViewers={profile?.viewedBy?.length}
+                            paginate={paginate}
+                            prePage={prePage}
+                            nextPage={nextPage}
+                            currentPage={currentPage}
+                          />
+                        )}
                       </ul>
                     </div>
                     {/* All my Post */}
@@ -378,14 +380,16 @@ export default function Profile(props) {
                           </div>
                         ))
                       )}
-                      <PostPagination
-                        postsPerPage={postsPerPage}
-                        totalPosts={profile?.posts?.length}
-                        postPaginate={postPaginate}
-                        prePostPage={prePostPage}
-                        nextPostPage={nextPostPage}
-                        currentPostPage={currentPostPage}
-                      />
+                      {currentPagePosts?.length > 0 && (
+                        <PostPagination
+                          postsPerPage={postsPerPage}
+                          totalPosts={profile?.posts?.length}
+                          postPaginate={postPaginate}
+                          prePostPage={prePostPage}
+                          nextPostPage={nextPostPage}
+                          currentPostPage={currentPostPage}
+                        />
+                      )}
                     </div>
                   </div>
                 </article>
