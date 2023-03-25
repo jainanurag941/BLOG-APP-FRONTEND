@@ -50,8 +50,21 @@ export default function Profile(props) {
     indexOfLastViewer
   );
 
+  const nViewers = Math.ceil(profile?.viewedBy?.length / viewersPerPage);
+  // const numbers = [...Array(nPage+1).keys()].slice(1);
+
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const prePage = () => {
+    if (currentPage !== 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+  const nextPage = () => {
+    if (currentPage !== nViewers) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
 
   // ---------------------------------------------------------------------
 
@@ -68,8 +81,22 @@ export default function Profile(props) {
     indexOfLastPost
   );
 
+  const nPosts = Math.ceil(profile?.posts?.length / postsPerPage);
+
   // Change page
+  const prePostPage = () => {
+    if (currentPostPage !== 1) {
+      setCurrentPostPage(currentPostPage - 1);
+    }
+  };
+
   const postPaginate = (pageNumber) => setCurrentPostPage(pageNumber);
+
+  const nextPostPage = () => {
+    if (currentPostPage !== nPosts) {
+      setCurrentPostPage(currentPostPage + 1);
+    }
+  };
 
   // ---------------------------------------------------------------------
 
@@ -298,6 +325,9 @@ export default function Profile(props) {
                           viewersPerPage={viewersPerPage}
                           totalViewers={profile?.viewedBy?.length}
                           paginate={paginate}
+                          prePage={prePage}
+                          nextPage={nextPage}
+                          currentPage={currentPage}
                         />
                       </ul>
                     </div>
@@ -352,6 +382,9 @@ export default function Profile(props) {
                         postsPerPage={postsPerPage}
                         totalPosts={profile?.posts?.length}
                         postPaginate={postPaginate}
+                        prePostPage={prePostPage}
+                        nextPostPage={nextPostPage}
+                        currentPostPage={currentPostPage}
                       />
                     </div>
                   </div>
