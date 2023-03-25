@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import {
   HeartIcon,
@@ -15,6 +15,8 @@ import {
 } from "../../../redux/slices/users/usersSlices";
 import DateFormatter from "../../../utils/DateFormatter";
 import LoadingComponent from "../../../utils/LoadingComponent";
+import Pagination from "./Pagination";
+import PostPagination from "./PostPagination";
 
 export default function Profile(props) {
   const dispatch = useDispatch();
@@ -34,6 +36,42 @@ export default function Profile(props) {
   useEffect(() => {
     dispatch(userProfileAction(id));
   }, [id, dispatch, followed, unFollowed]);
+
+  // --------------Pagination Profile Viewer functionality---------------
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [viewersPerPage] = useState(5);
+
+  // Get current posts
+  const indexOfLastViewer = currentPage * viewersPerPage;
+  const indexOfFirstViewer = indexOfLastViewer - viewersPerPage;
+  const currentPageViewers = profile?.viewedBy?.slice(
+    indexOfFirstViewer,
+    indexOfLastViewer
+  );
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // ---------------------------------------------------------------------
+
+  // --------------Pagination Post functionality---------------
+
+  const [currentPostPage, setCurrentPostPage] = useState(1);
+  const [postsPerPage] = useState(3);
+
+  // Get current posts
+  const indexOfLastPost = currentPostPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPagePosts = profile?.posts?.slice(
+    indexOfFirstPost,
+    indexOfLastPost
+  );
+
+  // Change page
+  const postPaginate = (pageNumber) => setCurrentPostPage(pageNumber);
+
+  // ---------------------------------------------------------------------
 
   const history = useHistory();
   const sendMailNavigate = () => {
@@ -231,10 +269,10 @@ export default function Profile(props) {
 
                       {/* Who view my post */}
                       <ul className="">
-                        {profile?.viewedBy?.length <= 0 ? (
+                        {currentPageViewers?.length <= 0 ? (
                           <h1>No Viewer</h1>
                         ) : (
-                          profile?.viewedBy?.map((user) => (
+                          currentPageViewers?.map((user) => (
                             <li key={user?._id}>
                               <Link to={`/profile/${user?._id}`}>
                                 <div className="flex mb-2 items-center space-x-4 lg:space-x-6">
@@ -256,6 +294,11 @@ export default function Profile(props) {
                             </li>
                           ))
                         )}
+                        <Pagination
+                          viewersPerPage={viewersPerPage}
+                          totalViewers={profile?.viewedBy?.length}
+                          paginate={paginate}
+                        />
                       </ul>
                     </div>
                     {/* All my Post */}
@@ -264,10 +307,10 @@ export default function Profile(props) {
                         My Post - {profile?.posts?.length}
                       </h1>
                       {/* Loop here */}
-                      {profile?.posts?.length <= 0 ? (
+                      {currentPagePosts?.length <= 0 ? (
                         <h2 className="text-center text-xl">No Post Found</h2>
                       ) : (
-                        profile?.posts?.map((post) => (
+                        currentPagePosts?.map((post) => (
                           <div
                             key={post?._id}
                             className="flex flex-wrap  -mx-3 mt-3  lg:mb-6"
@@ -305,6 +348,11 @@ export default function Profile(props) {
                           </div>
                         ))
                       )}
+                      <PostPagination
+                        postsPerPage={postsPerPage}
+                        totalPosts={profile?.posts?.length}
+                        postPaginate={postPaginate}
+                      />
                     </div>
                   </div>
                 </article>
