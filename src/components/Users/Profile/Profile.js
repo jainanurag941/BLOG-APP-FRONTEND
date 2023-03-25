@@ -15,8 +15,10 @@ import {
 } from "../../../redux/slices/users/usersSlices";
 import DateFormatter from "../../../utils/DateFormatter";
 import LoadingComponent from "../../../utils/LoadingComponent";
-import Pagination from "./Pagination";
-import PostPagination from "./PostPagination";
+// import Pagination from "./Pagination";
+// import PostPagination from "./PostPagination";
+import ReactPaginate from "react-paginate";
+import "./viewerPaginate.css";
 
 export default function Profile(props) {
   const dispatch = useDispatch();
@@ -39,66 +41,91 @@ export default function Profile(props) {
 
   // --------------Pagination Profile Viewer functionality---------------
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [viewersPerPage] = useState(5);
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [viewersPerPage] = useState(5);
 
   // Get current posts
-  const indexOfLastViewer = currentPage * viewersPerPage;
-  const indexOfFirstViewer = indexOfLastViewer - viewersPerPage;
-  const currentPageViewers = profile?.viewedBy?.slice(
-    indexOfFirstViewer,
-    indexOfLastViewer
-  );
+  // const indexOfLastViewer = currentPage * viewersPerPage;
+  // const indexOfFirstViewer = indexOfLastViewer - viewersPerPage;
+  // const currentPageViewers = profile?.viewedBy?.slice(
+  //   indexOfFirstViewer,
+  //   indexOfLastViewer
+  // );
 
-  const nViewers = Math.ceil(profile?.viewedBy?.length / viewersPerPage);
-  // const numbers = [...Array(nPage+1).keys()].slice(1);
+  // const nViewers = Math.ceil(profile?.viewedBy?.length / viewersPerPage);
 
   // Change page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-  const prePage = () => {
-    if (currentPage !== 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-  const nextPage = () => {
-    if (currentPage !== nViewers) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
+  // const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  // const prePage = () => {
+  //   if (currentPage !== 1) {
+  //     setCurrentPage(currentPage - 1);
+  //   }
+  // };
+  // const nextPage = () => {
+  //   if (currentPage !== nViewers) {
+  //     setCurrentPage(currentPage + 1);
+  //   }
+  // };
 
   // ---------------------------------------------------------------------
 
   // --------------Pagination Post functionality---------------
 
-  const [currentPostPage, setCurrentPostPage] = useState(1);
-  const [postsPerPage] = useState(3);
+  // const [currentPostPage, setCurrentPostPage] = useState(1);
+  // const [postsPerPage] = useState(3);
 
   // Get current posts
-  const indexOfLastPost = currentPostPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPagePosts = profile?.posts?.slice(
-    indexOfFirstPost,
-    indexOfLastPost
-  );
+  // const indexOfLastPost = currentPostPage * postsPerPage;
+  // const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  // const currentPagePosts = profile?.posts?.slice(
+  //   indexOfFirstPost,
+  //   indexOfLastPost
+  // );
 
-  const nPosts = Math.ceil(profile?.posts?.length / postsPerPage);
+  // const nPosts = Math.ceil(profile?.posts?.length / postsPerPage);
 
   // Change page
-  const prePostPage = () => {
-    if (currentPostPage !== 1) {
-      setCurrentPostPage(currentPostPage - 1);
-    }
-  };
+  // const prePostPage = () => {
+  //   if (currentPostPage !== 1) {
+  //     setCurrentPostPage(currentPostPage - 1);
+  //   }
+  // };
 
-  const postPaginate = (pageNumber) => setCurrentPostPage(pageNumber);
+  // const postPaginate = (pageNumber) => setCurrentPostPage(pageNumber);
 
-  const nextPostPage = () => {
-    if (currentPostPage !== nPosts) {
-      setCurrentPostPage(currentPostPage + 1);
-    }
-  };
+  // const nextPostPage = () => {
+  //   if (currentPostPage !== nPosts) {
+  //     setCurrentPostPage(currentPostPage + 1);
+  //   }
+  // };
 
   // ---------------------------------------------------------------------
+
+  //---------------React Paginate-----------------------------------------
+
+  //Profile Viewers
+  const [pageNumber, setPageNumber] = useState(0);
+
+  const viewersPerPage = 5;
+  const pagesVisited = pageNumber * viewersPerPage;
+  const pageCount = Math.ceil(profile?.viewedBy?.length / viewersPerPage);
+
+  const handlePageClick = ({ selected: selectedPage }) => {
+    setPageNumber(selectedPage);
+  };
+
+  //Number of posts
+  const [postPageNumber, setPostPageNumber] = useState(0);
+
+  const postsPerPage = 3;
+  const offset = postPageNumber * postsPerPage;
+  const pagePostCount = Math.ceil(profile?.posts?.length / postsPerPage);
+
+  const changePage = ({ selected: selectedPage }) => {
+    setPostPageNumber(selectedPage);
+  };
+
+  //----------------------------------------------------------------------
 
   const history = useHistory();
   const sendMailNavigate = () => {
@@ -296,32 +323,68 @@ export default function Profile(props) {
 
                       {/* Who view my post */}
                       <ul className="">
-                        {currentPageViewers?.length <= 0 ? (
+                        {profile?.viewedBy?.length <= 0 ? (
                           <h1>No Viewer</h1>
                         ) : (
-                          currentPageViewers?.map((user) => (
-                            <li key={user?._id}>
-                              <Link to={`/profile/${user?._id}`}>
-                                <div className="flex mb-2 items-center space-x-4 lg:space-x-6">
-                                  <img
-                                    className="w-16 h-16 rounded-full lg:w-20 lg:h-20"
-                                    src={user?.profilePhoto}
-                                    alt={user?.firstName}
-                                  />
-                                  <div className="font-medium text-lg leading-6 space-y-1">
-                                    <h3>
-                                      {user?.firstName} {user?.lastName}
-                                    </h3>
-                                    <p className="text-indigo-600">
-                                      {user?.accountType}
-                                    </p>
+                          profile?.viewedBy
+                            ?.slice(pagesVisited, pagesVisited + viewersPerPage)
+                            ?.map((user) => (
+                              <li key={user?._id}>
+                                <Link to={`/profile/${user?._id}`}>
+                                  <div className="flex mb-2 items-center space-x-4 lg:space-x-6">
+                                    <img
+                                      className="w-16 h-16 rounded-full lg:w-20 lg:h-20"
+                                      src={user?.profilePhoto}
+                                      alt={user?.firstName}
+                                    />
+                                    <div className="font-medium text-lg leading-6 space-y-1">
+                                      <h3>
+                                        {user?.firstName} {user?.lastName}
+                                      </h3>
+                                      <p className="text-indigo-600">
+                                        {user?.accountType}
+                                      </p>
+                                    </div>
                                   </div>
-                                </div>
-                              </Link>
-                            </li>
-                          ))
+                                </Link>
+                              </li>
+                            ))
                         )}
-                        {currentPageViewers?.length > 0 && (
+                        {profile?.viewedBy?.slice(
+                          pagesVisited,
+                          pagesVisited + viewersPerPage
+                        )?.length > 0 && (
+                          <ReactPaginate
+                            previousLabel={"Prev"}
+                            nextLabel={"Next"}
+                            breakLabel={".."}
+                            pageCount={pageCount}
+                            marginPagesDisplayed={2}
+                            onPageChange={handlePageClick}
+                            containerClassName={
+                              "inline-flex items-center -space-x-px m-7 justify-center pagination"
+                            }
+                            pageClassName={
+                              "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                            }
+                            pageLinkClassName={"paginationlink"}
+                            previousClassName={
+                              "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                            }
+                            previousLinkClassName={"paginationlink"}
+                            nextClassName={
+                              "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                            }
+                            nextLinkClassName={"paginationlink"}
+                            breakClassName={
+                              "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                            }
+                            breakLinkClassName={"paginationlink"}
+                            disabledClassName={"paginationlinkdisabled"}
+                            activeClassName={"bg-violet-300"}
+                          />
+                        )}
+                        {/* {currentPageViewers?.length > 0 && (
                           <Pagination
                             viewersPerPage={viewersPerPage}
                             totalViewers={profile?.viewedBy?.length}
@@ -330,7 +393,7 @@ export default function Profile(props) {
                             nextPage={nextPage}
                             currentPage={currentPage}
                           />
-                        )}
+                        )} */}
                       </ul>
                     </div>
                     {/* All my Post */}
@@ -339,48 +402,84 @@ export default function Profile(props) {
                         My Post - {profile?.posts?.length}
                       </h1>
                       {/* Loop here */}
-                      {currentPagePosts?.length <= 0 ? (
+                      {profile?.posts?.length <= 0 ? (
                         <h2 className="text-center text-xl">No Post Found</h2>
                       ) : (
-                        currentPagePosts?.map((post) => (
-                          <div
-                            key={post?._id}
-                            className="flex flex-wrap  -mx-3 mt-3  lg:mb-6"
-                          >
-                            <div className="mb-2   w-full lg:w-1/4 px-3">
-                              <Link to={`/posts/${post?._id}`}>
-                                <img
-                                  className="object-cover h-40 rounded"
-                                  src={post?.image}
-                                  alt="poster"
-                                />
-                              </Link>
-                            </div>
-                            <div className="w-full lg:w-3/4 px-3">
-                              <Link
-                                to={`/posts/${post?._id}`}
-                                className="hover:underline"
-                              >
-                                <h3 className="mb-1 text-2xl text-green-600 font-bold font-heading">
-                                  {/* {capitalizeWord(post?.title)} */}
-                                  {post?.title}
-                                </h3>
-                              </Link>
-                              <p className="text-gray-600 truncate">
-                                {post?.description}
-                              </p>
+                        profile?.posts
+                          ?.slice(offset, offset + postsPerPage)
+                          ?.map((post) => (
+                            <div
+                              key={post?._id}
+                              className="flex flex-wrap  -mx-3 mt-3  lg:mb-6"
+                            >
+                              <div className="mb-2   w-full lg:w-1/4 px-3">
+                                <Link to={`/posts/${post?._id}`}>
+                                  <img
+                                    className="object-cover h-40 rounded"
+                                    src={post?.image}
+                                    alt="poster"
+                                  />
+                                </Link>
+                              </div>
+                              <div className="w-full lg:w-3/4 px-3">
+                                <Link
+                                  to={`/posts/${post?._id}`}
+                                  className="hover:underline"
+                                >
+                                  <h3 className="mb-1 text-2xl text-green-600 font-bold font-heading">
+                                    {/* {capitalizeWord(post?.title)} */}
+                                    {post?.title}
+                                  </h3>
+                                </Link>
+                                <p className="text-gray-600 truncate">
+                                  {post?.description}
+                                </p>
 
-                              <Link
-                                className="text-indigo-500 hover:underline"
-                                to={`/posts/${post?._id}`}
-                              >
-                                Read more
-                              </Link>
+                                <Link
+                                  className="text-indigo-500 hover:underline"
+                                  to={`/posts/${post?._id}`}
+                                >
+                                  Read more
+                                </Link>
+                              </div>
                             </div>
-                          </div>
-                        ))
+                          ))
                       )}
-                      {currentPagePosts?.length > 0 && (
+                      {profile?.posts?.slice(offset, offset + postsPerPage)
+                        ?.length > 0 && (
+                        <div className="toCenter">
+                          <ReactPaginate
+                            previousLabel={"Prev"}
+                            nextLabel={"Next"}
+                            breakLabel={".."}
+                            pageCount={pagePostCount}
+                            marginPagesDisplayed={2}
+                            onPageChange={changePage}
+                            containerClassName={
+                              "inline-flex items-center -space-x-px mb-7 pagination"
+                            }
+                            pageClassName={
+                              "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                            }
+                            pageLinkClassName={"paginationlink"}
+                            previousClassName={
+                              "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                            }
+                            previousLinkClassName={"paginationlink"}
+                            nextClassName={
+                              "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                            }
+                            nextLinkClassName={"paginationlink"}
+                            breakClassName={
+                              "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                            }
+                            breakLinkClassName={"paginationlink"}
+                            disabledClassName={"paginationlinkdisabled"}
+                            activeClassName={"bg-violet-300"}
+                          />
+                        </div>
+                      )}
+                      {/* {currentPagePosts?.length > 0 && (
                         <PostPagination
                           postsPerPage={postsPerPage}
                           totalPosts={profile?.posts?.length}
@@ -389,7 +488,7 @@ export default function Profile(props) {
                           nextPostPage={nextPostPage}
                           currentPostPage={currentPostPage}
                         />
-                      )}
+                      )} */}
                     </div>
                   </div>
                 </article>

@@ -1,0 +1,20 @@
+.pagination {
+  border: 1px solid #47a7de;
+}
+
+.pagination a {
+  padding: 3px;
+}
+
+.paginationlink {
+  font-weight: bold;
+}
+
+.paginationlinkdisabled a {
+  cursor: not-allowed;
+  color: rgb(198, 197, 202);
+}
+
+.toCenter {
+  text-align: center;
+}
