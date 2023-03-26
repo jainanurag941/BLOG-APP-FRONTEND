@@ -363,26 +363,28 @@ export default function Profile(props) {
                               marginPagesDisplayed={2}
                               onPageChange={handlePageClick}
                               containerClassName={
-                                "inline-flex items-center -space-x-px m-7 justify-center pagination"
+                                "inline-flex items-center -space-x-px m-7 justify-center"
                               }
                               pageClassName={
-                                "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                                "px-3 py-2 leading-tight text-gray-500 bg-white border-2 border-indigo-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                               }
                               pageLinkClassName={"paginationlink"}
                               previousClassName={
-                                "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                                "px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border-2 border-indigo-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                               }
                               previousLinkClassName={"paginationlink"}
                               nextClassName={
-                                "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                                "px-3 py-2 leading-tight text-gray-500 bg-white border-2 border-indigo-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                               }
                               nextLinkClassName={"paginationlink"}
                               breakClassName={
-                                "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                                "px-3 py-2 leading-tight text-gray-500 bg-white border-2 border-indigo-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                               }
                               breakLinkClassName={"paginationlink"}
                               disabledClassName={"paginationlinkdisabled"}
-                              activeClassName={"bg-violet-300"}
+                              activeClassName={
+                                "bg-violet-300  hover:bg-gray-300"
+                              }
                             />
                           </div>
                         )}
@@ -458,26 +460,26 @@ export default function Profile(props) {
                             marginPagesDisplayed={2}
                             onPageChange={changePage}
                             containerClassName={
-                              "inline-flex items-center -space-x-px mb-7 pagination"
+                              "inline-flex items-center -space-x-px mb-6 mt-2 pagination"
                             }
                             pageClassName={
-                              "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                              "px-3 py-2 leading-tight text-gray-500 bg-white border-2 border-indigo-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                             }
                             pageLinkClassName={"paginationlink"}
                             previousClassName={
-                              "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                              "px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border-2 border-indigo-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                             }
                             previousLinkClassName={"paginationlink"}
                             nextClassName={
-                              "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                              "px-3 py-2 leading-tight text-gray-500 bg-white border-2 border-indigo-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                             }
                             nextLinkClassName={"paginationlink"}
                             breakClassName={
-                              "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                              "px-3 py-2 leading-tight text-gray-500 bg-white border-2 border-indigo-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                             }
                             breakLinkClassName={"paginationlink"}
                             disabledClassName={"paginationlinkdisabled"}
-                            activeClassName={"bg-violet-300"}
+                            activeClassName={"bg-violet-300 hover:bg-gray-300"}
                           />
                         </div>
                       )}
