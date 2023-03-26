@@ -47,21 +47,21 @@ const PostDetails = ({
           {serverErr} {appErr}
         </h1>
       ) : (
-        <section className="py-20 2xl:py-40 bg-gray-800 overflow-hidden">
+        <section className="py-20 bg-gray-800 overflow-hidden">
           <div className="container px-4 mx-auto">
             {/* Post Image */}
             <img
-              className="mb-24 w-full h-96 object-cover"
+              className="mb-10 w-90 h-80 object-cover float-left ml-5"
               src={postDetails?.image}
               alt=""
             />
             <div className="max-w-2xl mx-auto text-center">
-              <h2 className="mt-7 mb-14 text-6xl 2xl:text-7xl text-white font-bold font-heading">
+              <h2 className="mt-7 mb-14 text-6xl text-white font-bold font-heading">
                 {postDetails?.title}
               </h2>
 
               {/* User */}
-              <div className="inline-flex pt-14 mb-14 items-center border-t border-gray-500">
+              <div className="inline-flex pt-10 mb-14 items-center border-t border-gray-500">
                 <img
                   className="mr-8 w-20 lg:w-24 h-20 lg:h-24 rounded-full"
                   src={postDetails?.user?.profilePhoto}
