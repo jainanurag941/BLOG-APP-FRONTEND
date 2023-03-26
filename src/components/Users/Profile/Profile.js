@@ -153,7 +153,7 @@ export default function Profile(props) {
             </h2>
           </div>
         ) : (
-          <div className="flex flex-col min-w-0 flex-1 overflow-hidden">
+          <div className="flex flex-col min-w-0 flex-1 overflow-hidden bg-gray-50">
             <div className="flex-1 relative z-0 flex overflow-hidden">
               <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none xl:order-last">
                 <article>
@@ -322,14 +322,14 @@ export default function Profile(props) {
                       </h1>
 
                       {/* Who view my post */}
-                      <ul className="">
+                      <ul className="divide-y-2 divide-indigo-200 divide-opacity-25">
                         {profile?.viewedBy?.length <= 0 ? (
                           <h1>No Viewer</h1>
                         ) : (
                           profile?.viewedBy
                             ?.slice(pagesVisited, pagesVisited + viewersPerPage)
                             ?.map((user) => (
-                              <li key={user?._id}>
+                              <li key={user?._id} className="py-2 px-4">
                                 <Link to={`/profile/${user?._id}`}>
                                   <div className="flex mb-2 items-center space-x-4 lg:space-x-6">
                                     <img
@@ -406,84 +406,87 @@ export default function Profile(props) {
                         My Post - {profile?.posts?.length}
                       </h1>
                       {/* Loop here */}
-                      {profile?.posts?.length <= 0 ? (
-                        <h2 className="text-center text-xl">No Post Found</h2>
-                      ) : (
-                        profile?.posts
-                          ?.slice(offset, offset + postsPerPage)
-                          ?.map((post) => (
-                            <div
-                              key={post?._id}
-                              className="flex flex-wrap  -mx-3 mt-3  lg:mb-6"
-                            >
-                              <div className="mb-2   w-full lg:w-1/4 px-3">
-                                <Link to={`/posts/${post?._id}`}>
-                                  <img
-                                    className="object-cover h-40 rounded"
-                                    src={post?.image}
-                                    alt="poster"
-                                  />
-                                </Link>
-                              </div>
-                              <div className="w-full lg:w-3/4 px-3">
-                                <Link
-                                  to={`/posts/${post?._id}`}
-                                  className="hover:underline"
-                                >
-                                  <h3 className="mb-1 text-2xl text-green-600 font-bold font-heading">
-                                    {/* {capitalizeWord(post?.title)} */}
-                                    {post?.title}
-                                  </h3>
-                                </Link>
-                                <p className="text-gray-600 truncate">
-                                  {post?.description}
-                                </p>
+                      <ul className="divide-y-2 divide-indigo-200 divide-opacity-25">
+                        {profile?.posts?.length <= 0 ? (
+                          <h2 className="text-center text-xl">No Post Found</h2>
+                        ) : (
+                          profile?.posts
+                            ?.slice(offset, offset + postsPerPage)
+                            ?.map((post) => (
+                              <li
+                                key={post?._id}
+                                className="flex flex-wrap -mx-3 mt-3 lg:mb-6 py-2"
+                              >
+                                <div className="mb-2   w-full lg:w-1/4 px-3">
+                                  <Link to={`/posts/${post?._id}`}>
+                                    <img
+                                      className="object-cover h-40 rounded"
+                                      src={post?.image}
+                                      alt="poster"
+                                    />
+                                  </Link>
+                                </div>
+                                <div className="w-full lg:w-3/4 px-3">
+                                  <Link
+                                    to={`/posts/${post?._id}`}
+                                    className="hover:underline"
+                                  >
+                                    <h3 className="mb-1 text-2xl text-green-600 font-bold font-heading">
+                                      {/* {capitalizeWord(post?.title)} */}
+                                      {post?.title}
+                                    </h3>
+                                  </Link>
+                                  <p className="text-gray-600 truncate">
+                                    {post?.description}
+                                  </p>
 
-                                <Link
-                                  className="text-indigo-500 hover:underline"
-                                  to={`/posts/${post?._id}`}
-                                >
-                                  Read more
-                                </Link>
-                              </div>
-                            </div>
-                          ))
-                      )}
-                      {profile?.posts?.slice(offset, offset + postsPerPage)
-                        ?.length > 0 && (
-                        <div className="toCenter">
-                          <ReactPaginate
-                            previousLabel={"Prev"}
-                            nextLabel={"Next"}
-                            breakLabel={".."}
-                            pageCount={pagePostCount}
-                            marginPagesDisplayed={2}
-                            onPageChange={changePage}
-                            containerClassName={
-                              "inline-flex items-center -space-x-px mb-6 mt-2 pagination"
-                            }
-                            pageClassName={
-                              "px-3 py-2 leading-tight text-gray-500 bg-white border-2 border-indigo-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                            }
-                            pageLinkClassName={"paginationlink"}
-                            previousClassName={
-                              "px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border-2 border-indigo-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                            }
-                            previousLinkClassName={"paginationlink"}
-                            nextClassName={
-                              "px-3 py-2 leading-tight text-gray-500 bg-white border-2 border-indigo-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                            }
-                            nextLinkClassName={"paginationlink"}
-                            breakClassName={
-                              "px-3 py-2 leading-tight text-gray-500 bg-white border-2 border-indigo-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                            }
-                            breakLinkClassName={"paginationlink"}
-                            disabledClassName={"paginationlinkdisabled"}
-                            activeClassName={"bg-violet-300 hover:bg-gray-300"}
-                          />
-                        </div>
-                      )}
-                      {/* {currentPagePosts?.length > 0 && (
+                                  <Link
+                                    className="text-indigo-500 hover:underline"
+                                    to={`/posts/${post?._id}`}
+                                  >
+                                    Read more
+                                  </Link>
+                                </div>
+                              </li>
+                            ))
+                        )}
+                        {profile?.posts?.slice(offset, offset + postsPerPage)
+                          ?.length > 0 && (
+                          <div className="toCenter">
+                            <ReactPaginate
+                              previousLabel={"Prev"}
+                              nextLabel={"Next"}
+                              breakLabel={".."}
+                              pageCount={pagePostCount}
+                              marginPagesDisplayed={2}
+                              onPageChange={changePage}
+                              containerClassName={
+                                "inline-flex items-center -space-x-px mb-6 mt-2 pagination"
+                              }
+                              pageClassName={
+                                "px-3 py-2 leading-tight text-gray-500 bg-white border-2 border-indigo-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                              }
+                              pageLinkClassName={"paginationlink"}
+                              previousClassName={
+                                "px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border-2 border-indigo-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                              }
+                              previousLinkClassName={"paginationlink"}
+                              nextClassName={
+                                "px-3 py-2 leading-tight text-gray-500 bg-white border-2 border-indigo-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                              }
+                              nextLinkClassName={"paginationlink"}
+                              breakClassName={
+                                "px-3 py-2 leading-tight text-gray-500 bg-white border-2 border-indigo-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                              }
+                              breakLinkClassName={"paginationlink"}
+                              disabledClassName={"paginationlinkdisabled"}
+                              activeClassName={
+                                "bg-violet-300 hover:bg-gray-300"
+                              }
+                            />
+                          </div>
+                        )}
+                        {/* {currentPagePosts?.length > 0 && (
                         <PostPagination
                           postsPerPage={postsPerPage}
                           totalPosts={profile?.posts?.length}
@@ -493,6 +496,7 @@ export default function Profile(props) {
                           currentPostPage={currentPostPage}
                         />
                       )} */}
+                      </ul>
                     </div>
                   </div>
                 </article>
