@@ -114,7 +114,6 @@ export const fetchPostsAction = createAsyncThunk(
   "post/list",
   async (category, { rejectWithValue, getState, dispatch }) => {
     try {
-      console.log(`${process.env.REACT_APP_API_URL}`);
       const { data } = await axios.get(
         `${process.env.REACT_APP_API_URL}/api/posts?category=${category}`
       );
